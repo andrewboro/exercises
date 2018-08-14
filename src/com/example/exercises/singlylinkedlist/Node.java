@@ -1,17 +1,35 @@
 package com.example.exercises.singlylinkedlist;
 
-public class Node {
-	int data;
-	Node next;
+public class Node<T extends Comparable<T>> {
+	T data;
+	Node<T> next;
 
-	Node(Node head, int data) {
+	public Node(Node<T> head, T data) {
 		this.next = head;
 		this.data = data;
 	}
 
+	Node<T> insertSorted(T data) {
+		if (this.data.compareTo(data) > 0) {
+			return new Node<>(this, data);
+		}
+
+		Node<T> current = this;
+		while (current.next != null && current.next.data.compareTo(data) < 0) {
+			current = current.next;
+		}
+		if (current.next == null) {
+			current.next = new Node<>(null, data);
+		} else {
+			current.next = new Node<>(current.next, data);
+		}
+
+		return this;
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		Node current = this;
+		Node<T> current = this;
 		while (current != null) {
 			sb.append("Data: " + current.data + " -> ");
 			current = current.next;
@@ -19,27 +37,16 @@ public class Node {
 		return sb.toString();
 	}
 
-	Node insertSorted(int data) {
-		if (this.data > data) {
-			return new Node(this, data);
-		}
-		Node current = this;
-		while (current.next != null && current.next.data < data) {
-			current = current.next;
-		}
-		if (current.next == null) {
-			current.next = new Node(null, data);
-		} else {
-			current.next = new Node(current.next, data);
-		}
-
-		return this;
-	}
-
 	public static void main(String[] args) {
-		Node head = new Node(null, 12);
-		head = new Node(head, 5);
+		Node<Integer> head = new Node<>(null, 12);
+		head = new Node<>(head, 5);
 		head = head.insertSorted(7);
 		System.out.println(head);
+		
+		Node<Double> head2 = new Node<>(null, 1.23);
+		head2 = new Node<>(head2, 1.0);
+		head2 = head2.insertSorted(0.9);
+		System.out.println(head2);
 	}
+
 }
