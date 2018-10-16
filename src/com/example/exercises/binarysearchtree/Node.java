@@ -8,6 +8,10 @@ public class Node<T extends Comparable<T>> {
 	Node(T data) {
 		this.value = data;
 	}
+	
+	public T getValue() {
+		return value;
+	}
 
 	@Override
 	public String toString() {
