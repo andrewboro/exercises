@@ -8,7 +8,7 @@ public class Tree<T extends Comparable<T>> {
 			root = new Node<>(data);
 			return root;
 		}
-		
+
 		if (current == null) {
 			return new Node<>(data);
 		} else {
@@ -19,6 +19,89 @@ public class Tree<T extends Comparable<T>> {
 			}
 			return current;
 		}
+	}
+
+	public void remove(Node<T> toBeRemoved) {
+		if (toBeRemoved == null)
+			return;
+		// has two children
+		// has one child
+		// has no children
+		if (toBeRemoved.isLeaf()) {
+			// if is root
+			if (toBeRemoved == root) {
+				root = null;
+				return;
+			}
+			// find parent and null leaf
+			Node<T> parent = findParent(root, toBeRemoved);
+			if (parent.left == toBeRemoved) {
+				parent.left = null;
+			} else {
+				parent.right = null;
+			}
+
+		} else if (toBeRemoved.hasTwoChildren()) {
+			// find successor
+			Node<T> successor = findSuccessor(root, toBeRemoved);
+			toBeRemoved.value = successor.value;
+			remove(successor);
+
+		} else {
+			// has one child
+			// replace with child
+
+			Node<T> temp = (null != toBeRemoved.left) ? toBeRemoved.left : toBeRemoved.right;
+
+			toBeRemoved.value = temp.value;
+			toBeRemoved.left = temp.left;
+			toBeRemoved.right = temp.right;
+
+		}
+
+	}
+
+	private Node<T> find(Node<T> current, T data) {
+		if (current == null) {
+			return null;
+		}
+		if (data.compareTo(current.value) == 0) {
+			return current;
+		} else if (data.compareTo(current.value) < 0) {
+			return find(current.left, data);
+		} else
+			return find(current.right, data);
+	}
+
+	private Node<T> findParent(Node<T> current, Node<T> searchedFor) {
+		if (current.left == searchedFor || current.right == searchedFor) {
+			return current;
+		} else {
+			if (searchedFor.value.compareTo(current.value) < 0) {
+				return findParent(current.left, searchedFor);
+			} else {
+				return findParent(current.right, searchedFor);
+			}
+		}
+	}
+
+	private Node<T> findSuccessor(Node<T> current, Node<T> searchedFor) {
+		Node<T> successor = searchedFor.right;
+		if (successor != null) {
+			while (successor.left != null) {
+				successor = successor.left;
+			}
+			return successor;
+		}
+
+		do {
+			if (successor != null) {
+				searchedFor = successor;
+			}
+			successor = findParent(current, searchedFor);
+		} while (successor != null && successor.right == searchedFor);
+
+		return successor;
 	}
 
 	public static <T extends Comparable<T>> void printTree(Node<T> current) {
@@ -43,5 +126,15 @@ public class Tree<T extends Comparable<T>> {
 		tree.insert(tree.root, new Integer(15));
 		tree.insert(tree.root, new Integer(22));
 		printTree(tree.root);
+
+		Node<Integer> toberemoved = tree.find(tree.root, new Integer(13));
+
+		System.out.println("Found: " + toberemoved);
+
+		tree.remove(toberemoved);
+		System.out.println("Tree after removal");
+
+		printTree(tree.root);
+
 	}
 }

@@ -8,6 +8,14 @@ public class Node<T extends Comparable<T>> {
 	Node(T data) {
 		this.value = data;
 	}
+	
+	boolean hasTwoChildren() {
+		return (left != null && right != null);
+	}
+	
+	boolean isLeaf() {
+		return (left == null && right == null); 
+	}
 
 	@Override
 	public String toString() {
