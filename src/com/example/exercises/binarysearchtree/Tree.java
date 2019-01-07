@@ -21,6 +21,18 @@ public class Tree<T extends Comparable<T>> {
 		}
 	}
 
+	public Node<T> find(Node<T> current, T data) {
+		if ((current == null) || (current.getValue().compareTo(data) == 0)) {
+			return current;
+		}
+
+		if (data.compareTo(current.getValue()) < 0) {
+			return find(current.left, data);
+		}
+
+		return find(current.right, data);
+	}
+
 	public void remove(Node<T> toBeRemoved) {
 		if (toBeRemoved == null)
 			return;
@@ -59,18 +71,6 @@ public class Tree<T extends Comparable<T>> {
 
 		}
 
-	}
-
-	private Node<T> find(Node<T> current, T data) {
-		if (current == null) {
-			return null;
-		}
-		if (data.compareTo(current.value) == 0) {
-			return current;
-		} else if (data.compareTo(current.value) < 0) {
-			return find(current.left, data);
-		} else
-			return find(current.right, data);
 	}
 
 	private Node<T> findParent(Node<T> current, Node<T> searchedFor) {
@@ -135,6 +135,6 @@ public class Tree<T extends Comparable<T>> {
 		System.out.println("Tree after removal");
 
 		printTree(tree.root);
-
 	}
+
 }
