@@ -2,7 +2,7 @@ package com.example.exercises.binarysearchtree;
 
 public class Tree<T extends Comparable<T>> {
 	Node<T> root;
-
+	
 	public Node<T> insert(Node<T> current, T data) {
 		if (root == null) {
 			root = new Node<>(data);
@@ -104,6 +104,14 @@ public class Tree<T extends Comparable<T>> {
 		return successor;
 	}
 
+	public static <T extends Comparable<T>> int size(Node<T> current) {
+		if (null == current) {
+			return 0;
+		}
+		
+		return 1 + size(current.left) + size(current.right);
+	}
+	
 	public static <T extends Comparable<T>> void printTree(Node<T> current) {
 
 		if (current != null) {
@@ -116,7 +124,7 @@ public class Tree<T extends Comparable<T>> {
 		}
 
 	}
-
+	
 	public static void main(String[] args) {
 		Tree<Integer> tree = new Tree<>();
 		tree.insert(tree.root, new Integer(13));
@@ -135,6 +143,8 @@ public class Tree<T extends Comparable<T>> {
 		System.out.println("Tree after removal");
 
 		printTree(tree.root);
+		
+		System.out.println("Size of the tree: " + size(tree.root));
 	}
 
 }
