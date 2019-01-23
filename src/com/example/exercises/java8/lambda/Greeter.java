@@ -2,6 +2,6 @@ package com.example.exercises.java8.lambda;
 
 interface Greeter {
 
-    String greet(String str);
+    String greet(String name);
 
 }

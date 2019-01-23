@@ -111,6 +111,13 @@ public class Tree<T extends Comparable<T>> {
 		
 		return 1 + size(current.left) + size(current.right);
 	}
+
+	public static <T extends Comparable<T>> int depth(Node<T> current) {
+		if (current == null) {
+			return 0;
+		}
+		return 1 + Math.max(depth(current.left), depth(current.right));
+	}
 	
 	public static <T extends Comparable<T>> void printTree(Node<T> current) {
 
@@ -134,6 +141,8 @@ public class Tree<T extends Comparable<T>> {
 		tree.insert(tree.root, new Integer(15));
 		tree.insert(tree.root, new Integer(22));
 		printTree(tree.root);
+
+		System.out.println("Depth of the tree is: " + depth(tree.root));
 
 		Node<Integer> toberemoved = tree.find(tree.root, new Integer(13));
 
